@@ -22,7 +22,7 @@ This project was created as a **vibe coding experiment** — a creative break to
 
 ![Project Preview](preview.gif)
 
-*(You can record a short screen capture of the scrolling animation and add it here)*
+*(Coming Soon)*
 
 ---
 
