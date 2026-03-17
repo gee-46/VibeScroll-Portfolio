@@ -1,1 +1,33 @@
+"use client";
 
+import { motion } from "framer-motion";
+import Image from "next/image";
+
+export default function About() {
+    return (
+        <section id="about" className="py-32 px-6 md:px-12 max-w-7xl mx-auto relative z-20 bg-[#121212] border-t border-white/5">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                {/* Left Column - Image (Desktop: Left, Mobile: Top) */}
+                <motion.div
+                    initial={{ opacity: 0, x: -50 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.8 }}
+                    className="flex flex-col justify-center items-center lg:items-start w-full"
+                >
+                    <div className="relative w-full max-w-md aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_40px_rgba(124,58,237,0.15)] group">
+                        <div className="absolute inset-0 bg-accent/20 mix-blend-overlay z-10 group-hover:opacity-0 transition-opacity duration-700 pointer-events-none" />
+                        <Image 
+                            src="/about/ai_developer_workspace.png" 
+                            alt="AI Developer Workspace" 
+                            fill
+                            className="object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out grayscale-[0.2] group-hover:grayscale-0"
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            priority
+                        />
+                        
+                        {/* High-tech overlay elements */}
+                        <div className="absolute top-4 left-4 w-12 h-12 border-t sm border-l border-accent/50 z-20 pointer-events-none opacity-50" />
+                        <div className="absolute bottom-4 right-4 w-12 h-12 border-b sm border-r border-accent/50 z-20 pointer-events-none opacity-50" />
+                    </div>
+                </motion.div>
