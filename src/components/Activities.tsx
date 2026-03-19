@@ -52,3 +52,20 @@ export default function Activities() {
                         whileInView={{ opacity: 1, scale: 1, y: 0 }}
                         viewport={{ once: true, margin: "-50px" }}
                         transition={{ duration: 0.5, delay: index * 0.15 }}
+                    >
+                        {/* GlowCard handles the hover interactions and active gradient tracking */}
+                        <GlowCard className="p-8">
+                            <h3 className="text-2xl font-bold text-white group-hover/glow:text-accent transition-colors mb-6 cursor-none">
+                                {activity.title}
+                            </h3>
+
+                            <div className="text-secondary leading-relaxed flex-grow whitespace-pre-line cursor-none text-sm md:text-base">
+                                {activity.description}
+                            </div>
+                        </GlowCard>
+                    </motion.div>
+                ))}
+            </div>
+        </section>
+    );
+}
