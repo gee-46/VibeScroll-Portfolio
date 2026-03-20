@@ -98,3 +98,58 @@ export default function Contact() {
             
             // Horizontal lines
             for (let y = 0; y <= height; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+            }
+        };
+
+        let animationFrameId: number;
+
+        const loop = () => {
+            if (!ctx) return;
+            ctx.clearRect(0, 0, width, height);
+            
+            drawGrid();
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            // Connect particles
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < connectionDistance) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        const opacity = 1 - (distance / connectionDistance);
+                        ctx.strokeStyle = `rgba(124, 58, 237, ${opacity * 0.15})`;
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                }
+                
+                // Connect to mouse
+                const dxMouse = mouseX - particles[i].x;
+                const dyMouse = mouseY - particles[i].y;
+                const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+                if (distMouse < 150) {
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(mouseX, mouseY);
+                    const opacity = 1 - (distMouse / 150);
+                    ctx.strokeStyle = `rgba(124, 58, 237, ${opacity * 0.3})`;
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                }
+            }
+
+            animationFrameId = requestAnimationFrame(loop);
+        };
