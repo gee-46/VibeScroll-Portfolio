@@ -40,3 +40,28 @@ export default function GlowCard({ children, className = "" }: GlowCardProps) {
                     `,
                 }}
             />
+
+            {/* Border Highlight Glow */}
+            <motion.div
+                className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition duration-500 group-hover/glow:opacity-100 z-0"
+                style={{
+                    background: useMotionTemplate`
+                        radial-gradient(
+                            350px circle at ${mouseX}px ${mouseY}px,
+                            rgba(124, 58, 237, 0.4),
+                            transparent 80%
+                        )
+                    `,
+                }}
+            />
+            
+            {/* Inner Mask to create the border effect & glass feeling */}
+            <div className="absolute inset-[1px] rounded-[11px] bg-[#121212]/90 backdrop-blur-xl z-0 transition-colors duration-500" />
+
+            {/* Content Slot */}
+            <div className="relative z-10 flex flex-col h-full w-full pointer-events-auto">
+                {children}
+            </div>
+        </motion.div>
+    );
+}
