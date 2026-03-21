@@ -81,3 +81,66 @@ export default function Experience() {
                                         <p className="text-secondary/80 text-sm leading-relaxed">using Pycaw to map gesture inputs to system volume levels for smooth adjustments.</p>
                                     </div>
                                     <div>
+                                        <h4 className="text-white font-semibold text-sm mb-1 line-clamp-1">Currently refactoring the project</h4>
+                                        <p className="text-secondary/80 text-sm leading-relaxed">for cross-platform mobile deployment using Kivy and Buildozer, optimizing the computer vision pipeline for Android architecture.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </div>
+                </div>
+
+                {/* Entry 2 */}
+                <div className="relative">
+                    {/* Glowing Node */}
+                    <motion.div 
+                        initial={{ scale: 0, opacity: 0 }}
+                        whileInView={{ scale: 1, opacity: 1 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                        className="absolute left-[20px] md:left-1/2 -translate-x-1/2 top-8 w-4 h-4 rounded-full border-2 border-accent bg-[#121212] z-10 transition-colors" 
+                    />
+
+                    <div className="flex flex-col md:flex-row-reverse w-full justify-between items-start">
+                        {/* Empty Space for Desktop layout alternating */}
+                        <div className="hidden md:block w-5/12" />
+                        
+                        {/* Card Content (Left aligned on Desktop, Full on mobile)*/}
+                        <motion.div 
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                            transition={{ duration: 0.6 }}
+                            className="w-full pl-16 md:pl-0 md:w-5/12 text-left md:text-right"
+                        >
+                            <div className="p-8 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md hover:border-accent/40 hover:shadow-[0_0_30px_rgba(124,58,237,0.1)] transition-all duration-500 text-left">
+                                <h3 className="text-2xl font-bold text-white mb-1">Machine Learning Intern</h3>
+                                <p className="text-accent font-medium mb-6">Cognifyz Technologies</p>
+                                
+                                <p className="text-secondary mb-8 leading-relaxed text-sm md:text-base">
+                                    At Cognifyz Technologies, I worked as a Machine Learning Intern focusing on analyzing real-world datasets and building data-driven solutions.
+                                </p>
+
+                                <div className="space-y-5">
+                                    <div>
+                                        <h4 className="text-white font-semibold text-sm mb-1 line-clamp-1">Collected, cleaned, and interpreted</h4>
+                                        <p className="text-secondary/80 text-sm leading-relaxed">raw datasets to ensure accuracy and reliability.</p>
+                                    </div>
+                                    <div>
+                                        <h4 className="text-white font-semibold text-sm mb-1 line-clamp-1">Assisted in developing and optimizing</h4>
+                                        <p className="text-secondary/80 text-sm leading-relaxed">machine learning models for analytical tasks.</p>
+                                    </div>
+                                    <div>
+                                        <h4 className="text-white font-semibold text-sm mb-1 line-clamp-1">Applied statistical analysis </h4>
+                                        <p className="text-secondary/80 text-sm leading-relaxed">and machine learning techniques to generate insights that support data-driven decision-making.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    );
+}
