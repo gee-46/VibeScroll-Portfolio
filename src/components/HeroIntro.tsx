@@ -32,6 +32,6 @@ export default function HeroIntro({ onComplete }: HeroIntroProps) {
                     animate={{ scaleX: 1 }}
                     transition={{ duration: 0.8, delay: 0.8, ease: "easeInOut" }}
                     className="h-[2px] w-full bg-accent mt-2 shadow-[0_0_10px_rgba(124,58,237,0.8)] origin-left"
-                />
+                
 
 
