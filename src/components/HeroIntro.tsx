@@ -34,24 +34,4 @@ export default function HeroIntro({ onComplete }: HeroIntroProps) {
                     className="h-[2px] w-full bg-accent mt-2 shadow-[0_0_10px_rgba(124,58,237,0.8)] origin-left"
                 />
 
-                {/* The Portfolio Subtext */}
-                <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 1.6, ease: "easeOut" }}
-                    className="mt-4 text-secondary tracking-[0.4em] uppercase text-sm md:text-base font-light"
-                >
-                    Portfolio
-                </motion.div>
-            </div>
 
-            {/* Background Pulse Effect */}
-            <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 0.2, scale: 1.2 }}
-                transition={{ duration: 2, delay: 0.2, ease: "easeOut" }}
-                className="absolute w-[400px] h-[400px] bg-accent/20 rounded-full blur-[100px] pointer-events-none"
-            />
-        </motion.div>
-    );
-}
