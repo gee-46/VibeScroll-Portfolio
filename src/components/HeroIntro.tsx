@@ -14,3 +14,12 @@ export default function HeroIntro({ onComplete }: HeroIntroProps) {
             animate={{ opacity: 0 }}
             transition={{ duration: 0.8, delay: 3, ease: "easeInOut" }}
             onAnimationComplete={onComplete}
+        >
+            <div className="relative flex flex-col items-center">
+                {/* The GC Logo */}
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                    className="text-7xl md:text-9xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white to-white/50 drop-shadow-[0_0_15px_rgba(124,58,237,0.5)] glow-text"
+                >
