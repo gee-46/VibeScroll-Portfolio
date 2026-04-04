@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground: #ffffff;
+  --background: #121212;
+  --text-secondary: #b3b3b3;
+  --accent: #7c3aed;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-inter), sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* Ensure interactive elements don't show the default cursor */
+a,
+button,
+[role="button"],
+input,
+select,
+textarea {
+  cursor: none !important;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .glow-text {
+    text-shadow: 0 0 20px rgba(124, 58, 237, 0.4), 0 0 40px rgba(124, 58, 237, 0.2);
+  }
+}
