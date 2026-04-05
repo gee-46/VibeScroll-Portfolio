@@ -74,3 +74,73 @@ https://your-portfolio.vercel.app
     ├── about
     ├── projects
     └── sequence
+
+---
+
+## ⚙️ Getting Started
+
+Clone the repository:
+
+```bash
+git clone https://github.com/gee-46/VibeScroll-Portfolio.git
+cd VibeScroll-Portfolio
+
+Install dependencies:
+
+npm install
+
+Run the development server:
+
+npm run dev
+
+Open in browser:
+
+http://localhost:3000
+
+⚡ How It Works
+
+The portfolio uses a scroll-driven animation system:
+
+Image frames are loaded from /public/sequence/
+Scroll progress is tracked using Framer Motion
+Scroll is mapped to a frame index
+Frames are rendered on an HTML5 Canvas
+Overlay content animates with scroll
+
+This creates a cinematic storytelling experience similar to modern product websites.
+
+🤖 Tools Used
+Antigravity
+Gemini Pro
+Google Whisk
+
+These tools helped in ideation, UI structuring, and improving prompt engineering skills.
+
+🎯 Purpose
+
+This project was built as a creative exploration to:
+
+experiment with advanced frontend interactions
+explore scrollytelling techniques
+design futuristic AI-inspired interfaces
+🧑‍💻 Author
+
+Gautam N Chipkar
+
+AI & Data Science Engineering Student (SGBIT)
+
+🔗 Connect With Me
+
+GitHub
+https://github.com/gee-46
+
+LinkedIn
+https://www.linkedin.com/in/gautam-n-chipkar/
+
+⭐ Support
+
+If you found this project interesting:
+
+⭐ Star the repository
+🍴 Fork it
+💡 Use it as inspiration
