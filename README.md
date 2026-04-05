@@ -8,9 +8,8 @@ This project focuses on creating an immersive, interactive experience using **sc
 
 ## 🌐 Live Demo
 
-> (Add your deployed link here)
 
-[**View Live Portfolio**](https://your-portfolio.vercel.app)
+[**View Live Portfolio**](https://vibe-scroll-portfolio.vercel.app/)
 
 ---
 
