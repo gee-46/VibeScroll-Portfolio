@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import React, { useRef, useState } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import {
-    Terminal,
-    Brain,
-    Bot,
-    Calendar,
-    ChevronDown,
-    ChevronUp,
-    Sprout,
-} from "lucide-react";
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
+import { 
+    Terminal, 
+    Brain, 
+    Bot, 
+    Sprout, 
+    Calendar, 
+    ChevronDown, 
+    ChevronUp
+} from 'lucide-react';
 
 interface ExperienceItem {
     id: string;
@@ -145,72 +145,15 @@ const EXPERIENCES: ExperienceItem[] = [
     },
 ];
 
-// Helper to evaluate parametric position along desktop curved S-beam
-function getCurvedPointDesktop(t: number): { x: number; y: number } {
-    const clamped = Math.max(0, Math.min(1, t));
-
-    // Continuous C1-smooth Bezier curve across 3 segments connecting 4 nodes at y = [3%, 34%, 65%, 96%]
-    const segments = [
-        { p0: { x: 50, y: 3 }, p1: { x: 72, y: 13 }, p2: { x: 28, y: 24 }, p3: { x: 50, y: 34 } },
-        { p0: { x: 50, y: 34 }, p1: { x: 72, y: 44 }, p2: { x: 28, y: 55 }, p3: { x: 50, y: 65 } },
-        { p0: { x: 50, y: 65 }, p1: { x: 72, y: 75 }, p2: { x: 28, y: 86 }, p3: { x: 50, y: 96 } },
-    ];
-
-    let segIdx = Math.floor(clamped * 3);
-    if (segIdx >= 3) segIdx = 2;
-
-    const u = (clamped - segIdx / 3) * 3;
-    const seg = segments[segIdx];
-
-    const u1 = 1 - u;
-    const x =
-        u1 * u1 * u1 * seg.p0.x +
-        3 * u1 * u1 * u * seg.p1.x +
-        3 * u1 * u * u * seg.p2.x +
-        u * u * u * seg.p3.x;
-    const y =
-        u1 * u1 * u1 * seg.p0.y +
-        3 * u1 * u1 * u * seg.p1.y +
-        3 * u1 * u * u * seg.p2.y +
-        u * u * u * seg.p3.y;
-
-    return { x, y };
-}
-
-// Helper to evaluate parametric position along mobile curved beam
-function getCurvedPointMobile(t: number): { x: number; y: number } {
-    const clamped = Math.max(0, Math.min(1, t));
-
-    const segments = [
-        { p0: { x: 18, y: 3 }, p1: { x: 28, y: 13 }, p2: { x: 8, y: 24 }, p3: { x: 18, y: 34 } },
-        { p0: { x: 18, y: 34 }, p1: { x: 28, y: 44 }, p2: { x: 8, y: 55 }, p3: { x: 18, y: 65 } },
-        { p0: { x: 18, y: 65 }, p1: { x: 28, y: 75 }, p2: { x: 8, y: 86 }, p3: { x: 18, y: 96 } },
-    ];
-
-    let segIdx = Math.floor(clamped * 3);
-    if (segIdx >= 3) segIdx = 2;
-
-    const u = (clamped - segIdx / 3) * 3;
-    const seg = segments[segIdx];
-
-    const u1 = 1 - u;
-    const x =
-        u1 * u1 * u1 * seg.p0.x +
-        3 * u1 * u1 * u * seg.p1.x +
-        3 * u1 * u * u * seg.p2.x +
-        u * u * u * seg.p3.x;
-    const y =
-        u1 * u1 * u1 * seg.p0.y +
-        3 * u1 * u1 * u * seg.p1.y +
-        3 * u1 * u * u * seg.p2.y +
-        u * u * u * seg.p3.y;
-
-    return { x, y };
-}
-
 export default function Experience() {
     const sectionRef = useRef<HTMLDivElement>(null);
+    const desktopPathRef = useRef<SVGPathElement>(null);
+    const mobilePathRef = useRef<SVGPathElement>(null);
     const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
+
+    const [desktopHead, setDesktopHead] = useState({ x: 50, y: 0 });
+    const [mobileHead, setMobileHead] = useState({ x: 20, y: 0 });
+    const [isMounted, setIsMounted] = useState(false);
 
     const toggleExpand = (id: string) => {
         setExpandedCards((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -219,24 +162,39 @@ export default function Experience() {
     // Scroll Progress for the Timeline Beam with immediate real-time synchronization
     const { scrollYProgress } = useScroll({
         target: sectionRef,
-        offset: ["start 65%", "end 50%"],
+        offset: ["start 65%", "end 45%"],
     });
 
-    // Desktop follower dynamic (x, y) along the curved S-beam
-    const followerLeftDesktop = useTransform(scrollYProgress, (p) => `${getCurvedPointDesktop(p).x}%`);
-    const followerTopDesktop = useTransform(scrollYProgress, (p) => `${getCurvedPointDesktop(p).y}%`);
+    // Smooth C1-continuous organic S-curves that flow gracefully down the center without overlapping cards
+    const desktopCurvedPath = 
+        "M 50,0 C 46.5,8 46.5,12 50,20 C 53.5,28 53.5,34 50,42 C 46.5,50 46.5,56 50,65 C 53.5,74 53.5,80 50,88 C 47.5,94 48.5,98 50,100";
 
-    // Mobile follower dynamic (x, y)
-    const followerLeftMobile = useTransform(scrollYProgress, (p) => `${getCurvedPointMobile(p).x}px`);
-    const followerTopMobile = useTransform(scrollYProgress, (p) => `${getCurvedPointMobile(p).y}%`);
+    const mobileCurvedPath = 
+        "M 20,0 C 16,8 16,12 20,20 C 24,28 24,34 20,42 C 16,50 16,56 20,65 C 24,74 24,80 20,88 C 17,94 18,98 20,100";
 
-    // Desktop S-curve SVG path string
-    const desktopCurvedPath =
-        "M 50,3 C 72,13 28,24 50,34 C 72,44 28,55 50,65 C 72,75 28,86 50,96";
+    // Track real-time position along the SVG path for desktop & mobile
+    const updateHeadPositions = useCallback((progress: number) => {
+        const clamped = Math.max(0, Math.min(1, progress));
+        if (desktopPathRef.current) {
+            const length = desktopPathRef.current.getTotalLength();
+            const pt = desktopPathRef.current.getPointAtLength(clamped * length);
+            setDesktopHead({ x: pt.x, y: pt.y });
+        }
+        if (mobilePathRef.current) {
+            const length = mobilePathRef.current.getTotalLength();
+            const pt = mobilePathRef.current.getPointAtLength(clamped * length);
+            setMobileHead({ x: pt.x, y: pt.y });
+        }
+    }, []);
 
-    // Mobile curvy SVG path string
-    const mobileCurvedPath =
-        "M 18,3 C 28,13 8,24 18,34 C 28,44 8,55 18,65 C 28,75 8,86 18,96";
+    useEffect(() => {
+        setIsMounted(true);
+        updateHeadPositions(scrollYProgress.get());
+    }, [scrollYProgress, updateHeadPositions]);
+
+    useMotionValueEvent(scrollYProgress, "change", (latest) => {
+        updateHeadPositions(latest);
+    });
 
     return (
         <section
@@ -258,37 +216,41 @@ export default function Experience() {
                     <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-medium tracking-tight text-[#EDEDED] mb-4">
                         Experience<span className="text-accent font-sans">.</span>
                     </h2>
-                    <p className="text-secondary text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed tracking-wide">
-                        Engineering industrial AI systems, full-stack architectures, and precision intelligence platforms.
+                    <p className="text-zinc-400 text-sm md:text-base font-light max-w-2xl mx-auto leading-relaxed">
+                        A chronological track of applied engineering, machine learning pipelines, and production AI systems.
                     </p>
                 </motion.div>
             </div>
 
-            {/* 2. Interactive Animated Curved Career Timeline */}
-            <div className="relative max-w-6xl mx-auto">
+            {/* 2. Interactive Timeline Grid Container */}
+            <div className="relative">
                 {/* ======================================================== */}
                 {/* DESKTOP CURVED SVG TIMELINE BEAM (Hidden on mobile < md)  */}
                 {/* ======================================================== */}
                 <div className="hidden md:block absolute inset-0 w-full h-full pointer-events-none z-10">
                     <svg
-                        className="w-full h-full"
+                        className="w-full h-full overflow-visible"
                         viewBox="0 0 100 100"
                         preserveAspectRatio="none"
                         fill="none"
                     >
                         <defs>
                             <linearGradient id="beamGradientDesktop" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" stopColor="#7C3AED" />
-                                <stop offset="50%" stopColor="#A78BFA" />
-                                <stop offset="100%" stopColor="#C084FC" />
+                                <stop offset="0%" stopColor="#7C3AED" stopOpacity="0.4" />
+                                <stop offset="40%" stopColor="#8B5CF6" stopOpacity="0.85" />
+                                <stop offset="85%" stopColor="#C084FC" stopOpacity="1" />
+                                <stop offset="100%" stopColor="#FFFFFF" stopOpacity="1" />
                             </linearGradient>
-                            <filter id="beamGlowDesktop" x="-30%" y="-30%" width="160%" height="160%">
-                                <feGaussianBlur stdDeviation="3" result="blur" />
-                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                            <filter id="beamGlowDesktop" x="-40%" y="-40%" width="180%" height="180%">
+                                <feGaussianBlur stdDeviation="2.5" result="blur" />
+                                <feMerge>
+                                    <feMergeNode in="blur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
                             </filter>
                         </defs>
 
-                        {/* Dim Base Guide S-curve */}
+                        {/* Continuous Subtle Guide Track */}
                         <path
                             d={desktopCurvedPath}
                             stroke="rgba(255, 255, 255, 0.08)"
@@ -297,44 +259,50 @@ export default function Experience() {
                             vectorEffect="non-scaling-stroke"
                         />
 
-                        {/* Glowing Ambient Aura along the curve */}
+                        {/* Glowing Ambient Aura along the active curve */}
                         <motion.path
                             d={desktopCurvedPath}
-                            stroke="#A78BFA"
+                            stroke="#8B5CF6"
                             strokeWidth="6"
-                            strokeOpacity="0.35"
+                            strokeOpacity="0.3"
                             strokeLinecap="round"
                             filter="url(#beamGlowDesktop)"
                             vectorEffect="non-scaling-stroke"
                             style={{ pathLength: scrollYProgress }}
                         />
 
-                        {/* Glowing Active Foreground Beam synced to scroll */}
+                        {/* Active Luminous Laser Beam Trail */}
                         <motion.path
+                            ref={desktopPathRef}
                             d={desktopCurvedPath}
                             stroke="url(#beamGradientDesktop)"
-                            strokeWidth="3.5"
+                            strokeWidth="3"
                             strokeLinecap="round"
                             vectorEffect="non-scaling-stroke"
                             style={{ pathLength: scrollYProgress }}
                         />
                     </svg>
 
-                    {/* Traveling Follower Orb along the desktop S-curve */}
-                    <motion.div
-                        className="absolute -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full z-20 flex items-center justify-center pointer-events-none"
-                        style={{
-                            left: followerLeftDesktop,
-                            top: followerTopDesktop,
-                        }}
-                    >
-                        {/* Outer pulsating aura */}
-                        <div className="absolute inset-0 rounded-full bg-accent/40 animate-ping" />
-                        {/* Glow halo */}
-                        <div className="absolute -inset-1.5 rounded-full bg-accent/30 blur-sm" />
-                        {/* Core active glowing bead */}
-                        <div className="relative w-3.5 h-3.5 rounded-full bg-white border-2 border-accent shadow-[0_0_16px_rgba(167,139,250,1)]" />
-                    </motion.div>
+                    {/* Radiant Light Beam Head (Comet Core) */}
+                    {isMounted && (
+                        <div
+                            className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20 flex items-center justify-center transition-transform duration-75"
+                            style={{
+                                left: `${desktopHead.x}%`,
+                                top: `${desktopHead.y}%`,
+                            }}
+                        >
+                            {/* Outer pulsing laser aura */}
+                            <div className="absolute w-8 h-8 rounded-full bg-accent/40 animate-ping" />
+                            {/* Middle radiant glow halo */}
+                            <div className="absolute w-6 h-6 rounded-full bg-accent-light/40 blur-sm" />
+                            {/* Inner glowing shell */}
+                            <div className="w-4 h-4 rounded-full bg-accent border-2 border-white shadow-[0_0_20px_rgba(192,132,252,1)] flex items-center justify-center">
+                                {/* Brilliant pure white laser core */}
+                                <div className="w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_8px_#ffffff]" />
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* ======================================================== */}
@@ -342,20 +310,20 @@ export default function Experience() {
                 {/* ======================================================== */}
                 <div className="md:hidden absolute inset-0 w-12 h-full pointer-events-none z-10">
                     <svg
-                        className="w-full h-full"
-                        viewBox="0 0 36 100"
+                        className="w-full h-full overflow-visible"
+                        viewBox="0 0 40 100"
                         preserveAspectRatio="none"
                         fill="none"
                     >
                         <defs>
                             <linearGradient id="beamGradientMobile" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" stopColor="#7C3AED" />
-                                <stop offset="50%" stopColor="#A78BFA" />
-                                <stop offset="100%" stopColor="#C084FC" />
+                                <stop offset="0%" stopColor="#7C3AED" stopOpacity="0.4" />
+                                <stop offset="50%" stopColor="#A78BFA" stopOpacity="0.9" />
+                                <stop offset="100%" stopColor="#FFFFFF" stopOpacity="1" />
                             </linearGradient>
                         </defs>
 
-                        {/* Dim Base Guide */}
+                        {/* Continuous Guide Line */}
                         <path
                             d={mobileCurvedPath}
                             stroke="rgba(255, 255, 255, 0.08)"
@@ -366,26 +334,31 @@ export default function Experience() {
 
                         {/* Glowing Active Progress Beam */}
                         <motion.path
+                            ref={mobilePathRef}
                             d={mobileCurvedPath}
                             stroke="url(#beamGradientMobile)"
-                            strokeWidth="3"
+                            strokeWidth="2.5"
                             strokeLinecap="round"
                             vectorEffect="non-scaling-stroke"
                             style={{ pathLength: scrollYProgress }}
                         />
                     </svg>
 
-                    {/* Mobile Follower Orb */}
-                    <motion.div
-                        className="absolute -translate-x-1/2 -translate-y-1/2 w-5 h-5 rounded-full z-20 flex items-center justify-center pointer-events-none"
-                        style={{
-                            left: followerLeftMobile,
-                            top: followerTopMobile,
-                        }}
-                    >
-                        <div className="absolute inset-0 rounded-full bg-accent/40 animate-ping" />
-                        <div className="w-3 h-3 rounded-full bg-white border-2 border-accent shadow-[0_0_12px_rgba(167,139,250,1)]" />
-                    </motion.div>
+                    {/* Mobile Traveling Beam Head */}
+                    {isMounted && (
+                        <div
+                            className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20 flex items-center justify-center transition-transform duration-75"
+                            style={{
+                                left: `${mobileHead.x}px`,
+                                top: `${mobileHead.y}%`,
+                            }}
+                        >
+                            <div className="absolute w-6 h-6 rounded-full bg-accent/40 animate-ping" />
+                            <div className="w-3.5 h-3.5 rounded-full bg-accent border-2 border-white shadow-[0_0_12px_rgba(192,132,252,1)] flex items-center justify-center">
+                                <div className="w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_6px_#ffffff]" />
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* 3. Experiences Cards Stack */}
@@ -421,7 +394,7 @@ export default function Experience() {
                                     whileInView={{ scale: 1, opacity: 1 }}
                                     viewport={{ once: true, margin: "-80px" }}
                                     transition={{ duration: 0.5 }}
-                                    className="md:hidden absolute left-[18px] -translate-x-1/2 top-7 w-4 h-4 rounded-full bg-[#0e0e12] border-2 border-white/20 z-15 flex items-center justify-center"
+                                    className="md:hidden absolute left-[20px] -translate-x-1/2 top-7 w-4 h-4 rounded-full bg-[#0e0e12] border-2 border-white/20 z-15 flex items-center justify-center"
                                 >
                                     <div className="w-1.5 h-1.5 rounded-full bg-accent" />
                                 </motion.div>
