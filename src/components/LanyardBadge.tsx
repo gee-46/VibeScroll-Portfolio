@@ -19,7 +19,6 @@ import { generateCardTexture, generateCardBackTexture, generateStrapTexture } fr
 extend({ MeshLineGeometry, MeshLineMaterial });
 
 declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     interface IntrinsicElements {
       meshLineGeometry: any;
@@ -223,7 +222,6 @@ function Band({
       if (raycaster.ray.intersectPlane(dragPlane, dragPoint)) {
         const target = dragPoint.sub(dragOffset);
         
-        // Calculate throw velocity
         if (delta > 0) {
           dragVelocity.current.set(
             (target.x - lastDragPos.current.x) / delta,
@@ -306,14 +304,12 @@ function Band({
 
     if (isDragging) {
       setIsDragging(false);
-      // Impart throw release velocity
       if (card.current) {
         const vx = Math.max(-15, Math.min(15, dragVelocity.current.x * 0.3));
         const vy = Math.max(-15, Math.min(15, dragVelocity.current.y * 0.3));
         card.current.setLinvel({ x: vx, y: vy, z: 0 }, true);
       }
     } else {
-      // Tap / Double-tap detection
       const now = Date.now();
       if (now - lastTapTime.current < 380) {
         toggleFlip();
@@ -361,9 +357,7 @@ function Band({
               toggleFlip();
             }}
           >
-            {/* Smooth Flip Container Group */}
             <group ref={cardMeshRef}>
-              {/* 3D Card Base Housing */}
               {nodes.card && (
                 <mesh geometry={nodes.card.geometry}>
                   <meshPhysicalMaterial
@@ -376,7 +370,6 @@ function Band({
                 </mesh>
               )}
 
-              {/* Front Card Face (Photo, Name, AI Role, Badges) */}
               <mesh position={[0, 0.523, 0.0055]}>
                 <planeGeometry args={[0.716, 1.0]} />
                 <meshPhysicalMaterial
@@ -390,7 +383,6 @@ function Band({
                 />
               </mesh>
 
-              {/* Back Card Face (Luxury Cursive "GC" Monogram) */}
               <mesh position={[0, 0.523, -0.002]} rotation={[0, Math.PI, 0]}>
                 <planeGeometry args={[0.716, 1.0]} />
                 <meshPhysicalMaterial
@@ -405,7 +397,6 @@ function Band({
               </mesh>
             </group>
 
-            {/* Metal Clip */}
             {nodes.clip && (
               <mesh geometry={nodes.clip.geometry} material={materials.metal ?? undefined}>
                 <meshPhysicalMaterial
@@ -418,7 +409,6 @@ function Band({
               </mesh>
             )}
 
-            {/* Metal Clamp */}
             {nodes.clamp && (
               <mesh geometry={nodes.clamp.geometry}>
                 <meshPhysicalMaterial
