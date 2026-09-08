@@ -3,7 +3,6 @@ import { Inter, Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Cursor from "@/components/Cursor";
 import SmoothScroll from "@/components/SmoothScroll";
-import InteractiveBackground from "@/components/InteractiveBackground";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -37,9 +36,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${playfair.variable} ${jakarta.variable} font-sans antialiased text-[#EDEDED] bg-[#080808]`}>
         <SmoothScroll>
-          {/* The global background persistent across all scroll positions */}
-          <InteractiveBackground />
-          
           <Cursor />
           {children}
         </SmoothScroll>
