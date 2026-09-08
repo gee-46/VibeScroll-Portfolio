@@ -61,69 +61,14 @@ const TECH_ITEMS: TechData[] = RAW_TECH_ITEMS.map((item, i) => {
     };
 });
 
-interface RenderedNode {
-    id: number;
-    name: string;
-    label: string;
-    icon: React.ElementType;
-    color: string;
-    x: number;
-    y: number;
-    z: number;
-    scale: number;
-    opacity: number;
-    blur: number;
-    zIndex: number;
-    glow: number;
-}
-
-const computeNodes = (rotX: number, rotY: number, r: number): RenderedNode[] => {
-    return TECH_ITEMS.map((item) => {
-        const x0 = r * Math.sin(item.basePhi) * Math.cos(item.baseTheta);
-        const y0 = r * Math.cos(item.basePhi) * 0.82;
-        const z0 = r * Math.sin(item.basePhi) * Math.sin(item.baseTheta);
-
-        const cosX = Math.cos(rotX);
-        const sinX = Math.sin(rotX);
-        const y1 = y0 * cosX - z0 * sinX;
-        const z1 = y0 * sinX + z0 * cosX;
-
-        const cosY = Math.cos(rotY);
-        const sinY = Math.sin(rotY);
-        const x2 = x0 * cosY + z1 * sinY;
-        const z2 = -x0 * sinY + z1 * cosY;
-        const y2 = y1;
-
-        const normZ = Math.max(-1, Math.min(1, z2 / r));
-        const scale = 0.65 + (normZ + 1) * 0.24;
-        const opacity = 0.22 + (normZ + 1) * 0.39;
-        const blur = normZ > 0.3 ? 0 : (0.3 - normZ) * 2.2;
-        const zIndex = Math.round((normZ + 1) * 50) + 10;
-        const glow = normZ > 0.2 ? (normZ - 0.2) / 0.8 : 0;
-
-        return {
-            id: item.id,
-            name: item.name,
-            label: item.label,
-            icon: item.icon,
-            color: item.color,
-            x: x2,
-            y: y2,
-            z: z2,
-            scale,
-            opacity: Math.max(0.18, Math.min(1, opacity)),
-            blur: Math.max(0, blur),
-            zIndex,
-            glow,
-        };
-    }).sort((a, b) => a.zIndex - b.zIndex);
-};
-
 export default function TechStack() {
     const containerRef = useRef<HTMLDivElement>(null);
+    const itemRefs = useRef<Record<number, HTMLDivElement | null>>({});
     const [radius, setRadius] = useState(230);
-    const [nodes, setNodes] = useState<RenderedNode[]>(() => computeNodes(0.1, 0, 230));
     const [selectedId, setSelectedId] = useState<number | null>(null);
+    const selectedIdRef = useRef<number | null>(null);
+    selectedIdRef.current = selectedId;
+
     const [isInView, setIsInView] = useState(true);
 
     useEffect(() => {
@@ -168,6 +113,7 @@ export default function TechStack() {
         return () => window.removeEventListener("resize", updateRadius);
     }, []);
 
+    // 60FPS Direct Hardware-Accelerated DOM Transform Updates (0 React Re-renders during rotation)
     useEffect(() => {
         if (!isInView) return;
 
@@ -197,7 +143,43 @@ export default function TechStack() {
                 rotX.current = Math.max(-0.35, Math.min(0.35, rotX.current));
             }
 
-            setNodes(computeNodes(rotX.current, rotY.current, radius));
+            const r = radius;
+            const rx = rotX.current;
+            const ry = rotY.current;
+            const cosX = Math.cos(rx);
+            const sinX = Math.sin(rx);
+            const cosY = Math.cos(ry);
+            const sinY = Math.sin(ry);
+
+            for (let i = 0; i < TECH_ITEMS.length; i++) {
+                const item = TECH_ITEMS[i];
+                const el = itemRefs.current[item.id];
+                if (!el) continue;
+
+                const x0 = r * Math.sin(item.basePhi) * Math.cos(item.baseTheta);
+                const y0 = r * Math.cos(item.basePhi) * 0.82;
+                const z0 = r * Math.sin(item.basePhi) * Math.sin(item.baseTheta);
+
+                const y1 = y0 * cosX - z0 * sinX;
+                const z1 = y0 * sinX + z0 * cosX;
+
+                const x2 = x0 * cosY + z1 * sinY;
+                const z2 = -x0 * sinY + z1 * cosY;
+                const y2 = y1;
+
+                const normZ = Math.max(-1, Math.min(1, z2 / r));
+                const scale = 0.65 + (normZ + 1) * 0.24;
+                const opacity = Math.max(0.18, Math.min(1, 0.22 + (normZ + 1) * 0.39));
+                const blur = normZ > 0.3 ? 0 : Math.max(0, (0.3 - normZ) * 2.2);
+                const zIndex = Math.round((normZ + 1) * 50) + 10;
+                const isSelected = selectedIdRef.current === item.id;
+
+                el.style.transform = `translate3d(${x2.toFixed(1)}px, ${y2.toFixed(1)}px, 0px) translate(-50%, -50%) scale(${(isSelected ? scale * 1.15 : scale).toFixed(3)})`;
+                el.style.zIndex = `${isSelected ? 999 : zIndex}`;
+                el.style.opacity = `${isSelected ? 1 : opacity.toFixed(2)}`;
+                el.style.filter = isSelected ? "none" : blur > 0.1 ? `blur(${blur.toFixed(1)}px)` : "none";
+            }
+
             animationFrameId = requestAnimationFrame(update3DPositions);
         };
 
@@ -296,66 +278,49 @@ export default function TechStack() {
                 />
 
                 <div className="relative w-0 h-0 flex items-center justify-center pointer-events-none">
-                    {nodes.map((node) => {
-                        const Icon = node.icon;
-                        const isSelected = selectedId === node.id;
+                    {TECH_ITEMS.map((item) => {
+                        const Icon = item.icon;
+                        const isSelected = selectedId === item.id;
 
                         return (
                             <div
-                                key={node.id}
+                                key={item.id}
+                                ref={(el) => {
+                                    itemRefs.current[item.id] = el;
+                                }}
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    handleNodeClick(node.id);
+                                    handleNodeClick(item.id);
                                 }}
-                                className="absolute pointer-events-auto cursor-pointer transition-transform duration-75"
+                                className="absolute pointer-events-auto cursor-pointer will-change-transform"
                                 style={{
-                                    transform: `translate3d(${node.x}px, ${node.y}px, 0px) translate(-50%, -50%) scale(${isSelected ? node.scale * 1.15 : node.scale
-                                        })`,
-                                    zIndex: isSelected ? 999 : node.zIndex,
-                                    opacity: isSelected ? 1 : node.opacity,
-                                    filter: isSelected ? "none" : node.blur > 0 ? `blur(${node.blur}px)` : "none",
+                                    transform: `translate3d(0px, 0px, 0px) translate(-50%, -50%) scale(0.8)`,
+                                    opacity: 0,
                                 }}
                             >
                                 <div
-                                    className={`group relative flex flex-col items-center justify-center w-[74px] h-[74px] md:w-[86px] md:h-[86px] rounded-2xl md:rounded-3xl bg-[#0e0e11]/95 border transition-all duration-300 ${isSelected
+                                    className={`group relative flex flex-col items-center justify-center w-[74px] h-[74px] md:w-[86px] md:h-[86px] rounded-2xl md:rounded-3xl bg-[#0e0e11]/95 border transition-all duration-300 ${
+                                        isSelected
                                             ? "border-accent shadow-[0_0_35px_rgba(124,58,237,0.65)] bg-[#171720]"
                                             : "border-white/[0.1] hover:border-accent/60 hover:shadow-[0_0_30px_rgba(124,58,237,0.5)] hover:bg-[#16161c]"
-                                        }`}
-                                    style={{
-                                        boxShadow:
-                                            node.glow > 0 && !isSelected
-                                                ? `0 12px 35px rgba(0,0,0,0.8), 0 0 ${node.glow * 25}px rgba(124,58,237,${node.glow * 0.35
-                                                })`
-                                                : isSelected
-                                                    ? undefined
-                                                    : "0 8px 24px rgba(0,0,0,0.8)",
-                                    }}
+                                    }`}
                                 >
                                     <div
                                         className="text-2xl md:text-[28px] mb-1.5 transition-transform duration-300 group-hover:scale-110 flex items-center justify-center"
-                                        style={{ color: node.color }}
+                                        style={{ color: item.color }}
                                     >
                                         <Icon size={28} />
                                     </div>
 
                                     <span
-                                        className={`text-[8.5px] md:text-[9.5px] font-mono tracking-wider font-semibold uppercase truncate max-w-[70px] text-center px-1 transition-colors ${isSelected
+                                        className={`text-[8.5px] md:text-[9.5px] font-mono tracking-wider font-semibold uppercase truncate max-w-[70px] text-center px-1 transition-colors ${
+                                            isSelected
                                                 ? "text-white"
                                                 : "text-zinc-400 group-hover:text-white"
-                                            }`}
+                                        }`}
                                     >
-                                        {node.label}
+                                        {item.label}
                                     </span>
-
-                                    {node.glow > 0.3 && (
-                                        <div
-                                            className="absolute inset-0 rounded-2xl md:rounded-3xl pointer-events-none transition-opacity duration-300"
-                                            style={{
-                                                background: `radial-gradient(circle at 50% 0%, rgba(255,255,255,0.15), transparent 70%)`,
-                                                opacity: node.glow,
-                                            }}
-                                        />
-                                    )}
                                 </div>
                             </div>
                         );

@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import * as THREE from 'three';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -64,8 +64,8 @@ export default function LanyardBadge({
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
         onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
       >
-        <ambientLight intensity={0.8} />
-        <directionalLight position={[5, 8, 5]} intensity={1.4} castShadow />
+        <ambientLight intensity={0.9} />
+        <directionalLight position={[5, 8, 5]} intensity={1.5} castShadow />
         <directionalLight position={[-5, 4, 3]} intensity={0.8} color="#a78bfa" />
         <directionalLight position={[0, -5, 4]} intensity={0.6} color="#38bdf8" />
 

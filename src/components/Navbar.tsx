@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Github, Linkedin } from "lucide-react";
+import { Github, Linkedin, Gamepad2 } from "lucide-react";
 import Magnetic from "@/components/Magnetic";
 
 export default function Navbar() {
@@ -29,7 +29,17 @@ export default function Navbar() {
                 <Magnetic><Link href="#activities" className="hover:text-white transition-colors cursor-none block py-2 px-1">Achievements</Link></Magnetic>
                 <Magnetic><Link href="#contact" className="hover:text-white transition-colors cursor-none block py-2 px-1">Contact</Link></Magnetic>
                 
-                <div className="flex items-center gap-4 ml-3 border-l border-white/10 pl-6">
+                <Magnetic>
+                    <Link
+                        href="/game.html"
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-accent/15 hover:bg-accent/25 border border-accent/30 hover:border-accent text-accent-light hover:text-white transition-all cursor-none text-xs font-semibold tracking-wider"
+                    >
+                        <Gamepad2 size={14} className="text-cyan-400" />
+                        <span>3D WORLD</span>
+                    </Link>
+                </Magnetic>
+                
+                <div className="flex items-center gap-4 ml-1 border-l border-white/10 pl-6">
                     <Magnetic>
                         <Link href="https://github.com/gee-46" target="_blank" className="text-secondary hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all cursor-none block p-2">
                             <Github size={18} />

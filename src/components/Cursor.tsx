@@ -10,8 +10,7 @@ export default function Cursor() {
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
-    // Smooth springs for the outer ring trailing effect
-    const springConfig = { damping: 25, stiffness: 200, mass: 0.5 };
+    const springConfig = { damping: 25, stiffness: 220, mass: 0.4 };
     const cursorX = useSpring(mouseX, springConfig);
     const cursorY = useSpring(mouseY, springConfig);
 
@@ -29,7 +28,6 @@ export default function Cursor() {
         document.body.addEventListener("mouseleave", handleMouseLeave);
         document.body.addEventListener("mouseenter", handleMouseEnter);
 
-        // Provide a global way to hook into hover states for magnetic elements
         const handleMagneticEnter = () => setIsHovered(true);
         const handleMagneticLeave = () => setIsHovered(false);
 
@@ -45,33 +43,31 @@ export default function Cursor() {
         };
     }, [mouseX, mouseY, isVisible]);
 
-    // Don't render anything if it's a touch device / cursor hasn't moved yet
     if (typeof window !== "undefined" && window.matchMedia("(hover: none)").matches) {
         return null;
     }
 
     return (
         <>
-            {/* Center glowing dot (Exact pointer location) */}
+            {/* Center dot with mix-blend-difference (visible on both black and white backgrounds) */}
             <motion.div
-                className="fixed top-0 left-0 w-2 h-2 rounded-full pointer-events-none z-[100] shadow-[0_0_10px_rgba(124,58,237,0.8)]"
+                className="fixed top-0 left-0 w-2.5 h-2.5 rounded-full pointer-events-none z-[99999] bg-white mix-blend-difference shadow-[0_0_10px_rgba(255,255,255,0.8)]"
                 style={{
                     x: mouseX,
                     y: mouseY,
                     translateX: "-50%",
                     translateY: "-50%",
-                    background: "linear-gradient(135deg, #A78BFA, #7C3AED)",
                     opacity: isVisible ? 1 : 0,
                 }}
                 animate={{
-                    scale: isHovered ? 0 : 1, // Shrink dot when hovered
+                    scale: isHovered ? 0 : 1,
                 }}
-                transition={{ duration: 0.2 }}
+                transition={{ duration: 0.15 }}
             />
 
-            {/* Outer tracking ring */}
+            {/* Outer tracking ring with mix-blend-difference */}
             <motion.div
-                className="fixed top-0 left-0 border border-accent rounded-full pointer-events-none z-[99] mix-blend-screen"
+                className="fixed top-0 left-0 border border-white/90 rounded-full pointer-events-none z-[99998] mix-blend-difference"
                 style={{
                     x: cursorX,
                     y: cursorY,
@@ -80,12 +76,12 @@ export default function Cursor() {
                     opacity: isVisible ? 1 : 0,
                 }}
                 animate={{
-                    width: isHovered ? 60 : 32,
-                    height: isHovered ? 60 : 32,
-                    backgroundColor: isHovered ? "rgba(124,58,237,0.15)" : "transparent",
-                    boxShadow: isHovered ? "0 0 20px rgba(124,58,237,0.3)" : "none",
+                    width: isHovered ? 64 : 32,
+                    height: isHovered ? 64 : 32,
+                    backgroundColor: isHovered ? "rgba(255, 255, 255, 0.25)" : "transparent",
+                    borderColor: isHovered ? "rgba(255, 255, 255, 1)" : "rgba(255, 255, 255, 0.7)",
                 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
+                transition={{ duration: 0.22, ease: "easeOut" }}
             />
         </>
     );
