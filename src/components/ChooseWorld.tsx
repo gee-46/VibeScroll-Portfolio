@@ -31,10 +31,10 @@ export default function ChooseWorld({ onSelectWebsite, onSelectGame }: ChooseWor
                     className="flex flex-col gap-1"
                 >
                     <span className="font-mono text-[10px] tracking-[0.3em] uppercase font-bold text-zinc-500">
-                        EDITION 2026
+                        PORTFOLIO 2026
                     </span>
                     <span className="font-grotesk text-xs tracking-wider font-semibold text-zinc-800">
-                        VOL. 01 / REIMAGINED
+                        VOL. 01 / AI ENGINEER
                     </span>
                 </motion.div>
 
@@ -46,11 +46,11 @@ export default function ChooseWorld({ onSelectWebsite, onSelectGame }: ChooseWor
                     className="my-auto py-8"
                 >
                     <div className="writing-mode-vertical font-mono text-[11px] tracking-[0.4em] uppercase text-zinc-400 font-medium">
-                        SYSTEMS · VISION · GENAI
+                        GENAI · LLMs · RAG · AUTOMATION
                     </div>
                     <div className="w-8 h-[2px] bg-zinc-900 my-4" />
                     <p className="font-mono text-[10px] tracking-widest text-zinc-500">
-                        12.9716° N<br />77.5946° E
+                        15.8497° N<br />74.4977° E<br />BELAGAVI, INDIA
                     </p>
                 </motion.div>
 
@@ -61,8 +61,8 @@ export default function ChooseWorld({ onSelectWebsite, onSelectGame }: ChooseWor
                     transition={{ duration: 0.7, delay: 0.4 }}
                     className="flex flex-col gap-1 text-[10px] font-mono text-zinc-400"
                 >
-                    <span className="text-zinc-800 font-semibold tracking-wider">GAUTAM N CHIPKAR</span>
-                    <span>AI / ML ENGINEER</span>
+                    <span className="text-zinc-800 font-semibold tracking-wider">GAUTAM N. CHIPKAR</span>
+                    <span>AI ENGINEER</span>
                 </motion.div>
             </div>
 
@@ -85,7 +85,7 @@ export default function ChooseWorld({ onSelectWebsite, onSelectGame }: ChooseWor
                         className="text-zinc-400 font-mono text-[10px] md:text-xs tracking-[0.35em] uppercase font-semibold mb-5 flex items-center gap-2"
                     >
                         <span className="w-2 h-2 rounded-full bg-white/80 animate-pulse" />
-                        PORTFOLIO · REIMAGINED
+                        PORTFOLIO 2026 · AI ENGINEER
                     </motion.div>
 
                     {/* Title */}
@@ -95,7 +95,7 @@ export default function ChooseWorld({ onSelectWebsite, onSelectGame }: ChooseWor
                         transition={{ duration: 0.8, delay: 0.35 }}
                         className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight mb-4 leading-[1.02] font-grotesk text-white drop-shadow-[0_4px_30px_rgba(255,255,255,0.12)]"
                     >
-                        GAUTAM N CHIPKAR
+                        GAUTAM N.<br className="sm:hidden" /> CHIPKAR
                     </motion.h1>
 
                     {/* Subtitle */}
@@ -103,9 +103,9 @@ export default function ChooseWorld({ onSelectWebsite, onSelectGame }: ChooseWor
                         initial={{ opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.7, delay: 0.5 }}
-                        className="text-zinc-400 font-light text-sm sm:text-base md:text-lg max-w-lg mb-12 sm:mb-14 font-sans"
+                        className="text-zinc-400 font-light text-sm sm:text-base md:text-lg max-w-lg mb-10 sm:mb-12 font-sans"
                     >
-                        Choose how you want to explore my world.
+                        Two ways to explore my journey.
                     </motion.p>
 
                     {/* Choices Row */}
@@ -115,51 +115,55 @@ export default function ChooseWorld({ onSelectWebsite, onSelectGame }: ChooseWor
                         transition={{ duration: 0.7, delay: 0.65 }}
                         className="flex flex-col sm:flex-row gap-5 md:gap-7 justify-center items-stretch w-full max-w-2xl"
                     >
-                        {/* Option 01: Website */}
+                        {/* Option 01: Cinematic Portfolio */}
                         <Magnetic>
                             <button
                                 onClick={onSelectWebsite}
-                                className="group w-full sm:w-[280px] text-left p-6 md:p-7 rounded-2xl border border-white/[0.12] bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/40 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(255,255,255,0.08)] focus:outline-none cursor-none"
+                                className="group w-full sm:w-[310px] text-left p-6 md:p-7 rounded-2xl border border-white/[0.12] bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/40 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(255,255,255,0.08)] focus:outline-none cursor-none flex flex-col justify-between"
                             >
-                                <span className="block text-[10px] tracking-[0.25em] text-zinc-500 font-mono uppercase mb-2 group-hover:text-zinc-300 transition-colors">
-                                    OPTION 01
-                                </span>
-                                <span className="block font-bold text-lg md:text-xl text-white font-grotesk group-hover:text-white transition-colors">
-                                    Website →
-                                </span>
-                                <p className="text-xs md:text-sm text-zinc-400 font-light mt-2 leading-relaxed">
-                                    View the polished, professional portfolio.
-                                </p>
+                                <div>
+                                    <span className="block text-[10px] tracking-[0.25em] text-zinc-500 font-mono uppercase mb-2 group-hover:text-zinc-300 transition-colors">
+                                        OPTION 01
+                                    </span>
+                                    <span className="block font-bold text-lg md:text-xl text-white font-grotesk group-hover:text-white transition-colors">
+                                        Cinematic Portfolio →
+                                    </span>
+                                    <p className="text-xs md:text-sm text-zinc-400 font-light mt-2 leading-relaxed">
+                                        Explore my projects, experience, skills, contributions, and achievements.
+                                    </p>
+                                </div>
                             </button>
                         </Magnetic>
 
-                        {/* Option 02: Game */}
+                        {/* Option 02: Career Adventure */}
                         <Magnetic>
                             <button
                                 onClick={onSelectGame}
-                                className="group w-full sm:w-[280px] text-left p-6 md:p-7 rounded-2xl border border-white/[0.12] bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/40 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(255,255,255,0.08)] focus:outline-none cursor-none"
+                                className="group w-full sm:w-[310px] text-left p-6 md:p-7 rounded-2xl border border-white/[0.12] bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/40 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(255,255,255,0.08)] focus:outline-none cursor-none flex flex-col justify-between"
                             >
-                                <span className="block text-[10px] tracking-[0.25em] text-zinc-500 font-mono uppercase mb-2 group-hover:text-zinc-300 transition-colors">
-                                    OPTION 02
-                                </span>
-                                <span className="block font-bold text-lg md:text-xl text-white font-grotesk group-hover:text-white transition-colors">
-                                    Explore Through The Game
-                                </span>
-                                <p className="text-xs md:text-sm text-zinc-400 font-light mt-2 leading-relaxed">
-                                    Walk through a handcrafted voxel world built from my career.
-                                </p>
+                                <div>
+                                    <span className="block text-[10px] tracking-[0.25em] text-zinc-500 font-mono uppercase mb-2 group-hover:text-zinc-300 transition-colors">
+                                        OPTION 02
+                                    </span>
+                                    <span className="block font-bold text-lg md:text-xl text-white font-grotesk group-hover:text-white transition-colors">
+                                        Career Adventure →
+                                    </span>
+                                    <p className="text-xs md:text-sm text-zinc-400 font-light mt-2 leading-relaxed">
+                                        Explore my career through an interactive voxel world.
+                                    </p>
+                                </div>
                             </button>
                         </Magnetic>
                     </motion.div>
 
-                    {/* Footnote */}
+                    {/* Subtle Content Indicator */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 0.8, delay: 0.85 }}
-                        className="mt-12 md:mt-14 text-[10px] md:text-xs text-zinc-500 tracking-[0.2em] uppercase font-mono"
+                        transition={{ duration: 0.8, delay: 0.8 }}
+                        className="mt-8 sm:mt-10 text-[9px] md:text-[10px] text-zinc-500/80 tracking-[0.25em] uppercase font-mono max-w-xl mx-auto leading-relaxed"
                     >
-                        AI & DATA SCIENCE ENGINEER · BENGALURU, INDIA
+                        ABOUT · EXPERIENCE · PROJECTS · TECH STACK · CONTRIBUTIONS · ACHIEVEMENTS
                     </motion.div>
                 </div>
             </div>
