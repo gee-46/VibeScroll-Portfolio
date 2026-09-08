@@ -46,14 +46,14 @@ export default function Overlay({ progress }: OverlayProps) {
                 >
                     <h2 className="text-5xl md:text-7xl font-heading font-medium tracking-tight text-[#EDEDED] drop-shadow-2xl mb-8 leading-tight">
                         I build AI-powered <br />
-                        <span className="text-accent underline decoration-4 decoration-accent/50 underline-offset-8">digital experiences.</span>
+                        <span className="text-accent underline decoration-4 decoration-accent/50 underline-offset-8">systems that solve real problems.</span>
                     </h2>
                     <div className="bg-[#0e0e10]/80 backdrop-blur-xl inline-block p-6 rounded-2xl border border-white/[0.08] shadow-2xl">
                         <p className="text-[#EDEDED]/90 text-lg md:text-2xl font-light tracking-wide font-grotesk">
-                            Python <span className="text-accent mx-2">•</span>
-                            Machine Learning <span className="text-accent mx-2">•</span>
-                            Data Science <span className="text-accent mx-2">•</span>
-                            GenAI
+                            GenAI <span className="text-accent mx-2">•</span>
+                            LLMs <span className="text-accent mx-2">•</span>
+                            RAG <span className="text-accent mx-2">•</span>
+                            AI Agents
                         </p>
                     </div>
                 </motion.div>
@@ -64,12 +64,12 @@ export default function Overlay({ progress }: OverlayProps) {
                     className="absolute right-6 md:right-12 max-w-3xl text-right ml-auto"
                 >
                     <h2 className="text-5xl md:text-7xl font-heading font-medium tracking-tight text-[#EDEDED] drop-shadow-2xl mb-8 leading-tight">
-                        Bridging design, <br />
-                        data, and <span className="text-accent glow-text">engineering.</span>
+                        Bridging intelligence, <br />
+                        automation, and <span className="text-accent glow-text">engineering.</span>
                     </h2>
                     <div className="bg-[#0e0e10]/80 backdrop-blur-xl inline-block p-6 rounded-2xl border border-white/[0.08] shadow-2xl ml-auto">
                         <p className="text-[#EDEDED]/90 text-lg md:text-2xl font-light tracking-wide font-grotesk">
-                            From machine learning models to beautiful interfaces.
+                            From LLM applications to production-ready AI systems.
                         </p>
                     </div>
                 </motion.div>
