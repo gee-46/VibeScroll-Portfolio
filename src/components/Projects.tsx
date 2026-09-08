@@ -15,18 +15,18 @@ export default function Projects() {
             link: "https://github.com/gee-46/-Disaster-VQA-Response-System"
         },
         {
-            title: "Conversational QA Chatbot",
-            description: "Context-aware chatbot with message history and deep document understanding capable of retrieving factual answers.",
-            tags: ["LangChain", "LLMs", "NLP", "RAG"],
-            image: "/projects/project2_conversational_qa_1773483434466.png",
-            link: "https://github.com/gee-46/ContextIQ-AI-Document-Intelligence-Assistant"
+            title: "PPE Detection System",
+            description: "Real-time Personal Protective Equipment compliance system utilizing computer vision to detect helmets, safety vests, and site gear with instant violation alerts.",
+            tags: ["YOLO", "Computer Vision", "PyTorch", "Deep Learning"],
+            image: "/projects/project2_ppe_detection.jpg",
+            link: "https://github.com/gee-46/ppe-detection-system"
         },
         {
-            title: "ManMitra – AI Mental Health Assistant",
-            description: "Built during Google Cloud GenAI Hackathon. AI-powered mental health awareness assistant offering empathetic responses and coping strategies.",
-            tags: ["GCP", "GenAI", "Mental Health"],
-            image: "/projects/project3_manmitra_mental_health_1773483451109.png",
-            link: "https://github.com/gee-46/mannmitra-2.0"
+            title: "SlumSafe AI – Urban Risk Intelligence",
+            description: "AI-driven geospatial and computer vision platform analyzing informal settlement hazards, structural density, and disaster vulnerability.",
+            tags: ["GeoAI", "Computer Vision", "PyTorch", "AI for Good"],
+            image: "/projects/project3_slumsafe_ai.jpg",
+            link: "https://github.com/gee-46/SlumSafe-AI"
         },
         {
             title: "Gesture-Based Volume Control",
