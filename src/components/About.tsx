@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
@@ -57,22 +57,31 @@ export default function About() {
                     <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-medium tracking-tight text-[#EDEDED] mb-8">
                         About Me<span className="text-accent font-sans">.</span>
                     </h2>
-                    <div className="space-y-6 text-zinc-300/90 text-base md:text-lg leading-relaxed md:leading-8 font-light">
+                    <div className="space-y-5 text-zinc-300/90 text-base md:text-lg leading-relaxed md:leading-8 font-light">
                         <p>
-                            I&apos;m <span className="text-white font-medium">Gautam N Chipkar</span>, a third-year Artificial Intelligence & Data Science (AI-DS) engineering student focused on building intelligent systems that solve real-world problems using Machine Learning, Computer Vision, and Generative AI.
+                            I’m <span className="text-white font-medium">Gautam N. Chipkar</span>, a final-year <span className="text-white font-medium">AI & Data Science student at SGBIT, Belagavi</span>, focused on building AI systems that move beyond demos and into the real world.
                         </p>
                         <p>
-                            My journey into AI started with building strong foundations in classical machine learning algorithms such as Linear Regression, Logistic Regression, K-Nearest Neighbors, and Decision Trees. I strongly believe that mastering core concepts is essential before moving toward advanced AI systems.
+                            My work sits at the intersection of <span className="text-white font-medium">Generative AI, LLMs, RAG, Computer Vision, and backend engineering</span>. I enjoy understanding what happens beneath the frameworks — from embeddings and retrieval pipelines to model inference and APIs — and turning those pieces into systems that are <span className="text-accent-light font-medium">grounded, reliable, and production-ready</span>.
                         </p>
                         <p>
-                            I have also developed practical computer vision applications using Python, OpenCV, and MediaPipe, focusing on real-time human-computer interaction systems.
+                            I’ve built AI solutions across <span className="text-white font-medium">precision agriculture, disaster intelligence, urban safety, and smart infrastructure</span>, and have been a <span className="text-accent-light font-medium">3× National Hackathon Finalist</span> along the way.
                         </p>
                         <p>
-                            During my internships at Infosys Springboard and Cognifyz Technologies, I worked on real datasets and built AI-driven applications, strengthening my understanding of the complete machine learning pipeline.
+                            Currently, I’m an <span className="text-white font-medium">AI/ML Intern at Samruddhi Organics</span>, where I lead the technology team and work on <span className="text-accent-light font-medium">NutriPalm AI</span>, an AI-powered precision agriculture platform designed to help farmers make smarter, data-driven decisions.
                         </p>
                         <p>
-                            Currently, I am expanding my expertise in Deep Learning and Generative AI, exploring architectures such as CNNs, ANN, LSTMs, and NLP models while actively building practical AI projects.
+                            I’m especially interested in <span className="text-white font-medium">AI engineering, LLM applications, RAG systems, and taking AI from an idea → prototype → production</span>.
                         </p>
+
+                        <div className="pt-4 border-t border-white/[0.08] mt-6">
+                            <p className="text-zinc-400 text-lg md:text-xl font-medium tracking-tight">
+                                I don&apos;t just build AI models.
+                            </p>
+                            <p className="text-xl md:text-2xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-200 to-accent-light mt-1">
+                                I ship AI to business.
+                            </p>
+                        </div>
                     </div>
                 </motion.div>
             </div>
