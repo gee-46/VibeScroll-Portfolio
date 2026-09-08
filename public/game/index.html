@@ -657,8 +657,9 @@ function renderPanelBody(kind, plain){
       ${c.items.map(i=>`
         <div class="entry">
           <div class="entry-org">${esc(i.name)}</div>
-          <div class="entry-meta">${esc(i.issuer)}</div>
+          <div class="entry-meta">${esc(i.issuer)} ${i.date?` · ${esc(i.date)}`:''}</div>
           <div class="p-body"><p>${esc(i.note)}</p></div>
+          ${i.link ? `<a class="entry-link" href="${i.link}" target="_blank" rel="noopener">Verify credential →</a>` : ''}
         </div>`).join('')}`;
   }
   if (kind === 'contributions'){

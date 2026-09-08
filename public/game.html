@@ -652,13 +652,14 @@ function renderPanelBody(kind, plain){
   }
   if (kind === 'certifications'){
     const c = DATA.certifications;
-    return `<div class="panel-eyebrow">CERTIFICATION ACADEMY</div><div class="panel-title">Certifications</div>
+    return `<div class="panel-eyebrow">CERTIFICATION ACADEMY</div><div class="panel-title">Industry Certifications</div>
       <div class="p-body"><p>${esc(c.intro)}</p></div>
       ${c.items.map(i=>`
         <div class="entry">
           <div class="entry-org">${esc(i.name)}</div>
-          <div class="entry-meta">${esc(i.issuer)}</div>
+          <div class="entry-meta">${esc(i.issuer)}${i.date ? ` · ${esc(i.date)}` : ''}${i.credentialId ? ` · ID: ${esc(i.credentialId)}` : ''}</div>
           <div class="p-body"><p>${esc(i.note)}</p></div>
+          ${i.link ? `<div style="margin-top:8px;"><a href="${esc(i.link)}" target="_blank" class="entry-link">VERIFY CREDENTIAL ↗</a></div>` : ''}
         </div>`).join('')}`;
   }
   if (kind === 'contributions'){
